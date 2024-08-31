@@ -42,3 +42,16 @@ def delete_book(request, book_id):
         book.delete()
         return redirect('book_list')
     return render(request, 'confirm_delete.html', {'book': book})
+
+from django.shortcuts import render
+from .models import Book
+from django.db.models import Q
+
+def search_books(request):
+    query = request.GET.get('q', '')
+    if query:
+        books = Book.objects.filter(Q(title__icontains=query) | Q(author__icontains=query))
+    else:
+        books = Book.objects.all()
+    return render(request, 'bookshelf/book_list.html', {'books': books})
+
