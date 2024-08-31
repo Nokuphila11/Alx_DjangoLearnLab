@@ -181,3 +181,7 @@ SECURE_BROWSER_XSS_FILTER = True
 # Enable SECURE_SSL_REDIRECT to ensure all traffic is redirected to HTTPS
 SECURE_SSL_REDIRECT = True
 
+# settings.py
+
+# Trust the X-Forwarded-Proto header set by your proxy (e.g., Nginx or Heroku) to detect HTTPS
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
