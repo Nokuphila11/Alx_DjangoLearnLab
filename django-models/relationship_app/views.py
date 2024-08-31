@@ -120,6 +120,48 @@ def admin_view(request):
 def librarian_view(request):
     return render(request, 'relationship_app/librarian_view.html')
 
+# relationship_app/views.py
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.views.generic import View
+from .models import Book
+
+# View to Add a New Book
+@permission_required('relationship_app.can_add_book', raise_exception=True)
+def add_book(request):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        author_id = request.POST.get('author')
+        publication_year = request.POST.get('publication_year')
+        # Assume Author model exists and is imported
+        author = get_object_or_404(Author, pk=author_id)
+        Book.objects.create(title=title, author=author, publication_year=publication_year)
+        return redirect('book_list')
+    return render(request, 'relationship_app/add_book.html')
+
+# View to Edit a Book
+@permission_required('relationship_app.can_change_book', raise_exception=True)
+def edit_book(request, book_id):
+    book = get_object_or_404(Book, id=book_id)
+    if request.method == 'POST':
+        book.title = request.POST.get('title')
+        book.author_id = request.POST.get('author')
+        book.publication_year = request.POST.get('publication_year')
+        book.save()
+        return redirect('book_list')
+    return render(request, 'relationship_app/edit_book.html', {'book': book})
+
+# View to Delete a Book
+@permission_required('relationship_app.can_delete_book', raise_exception=True)
+def delete_book(request, book_id):
+    book = get_object_or_404(Book, id=book_id)
+    if request.method == 'POST':
+        book.delete()
+        return redirect('book_list')
+    return render(request, 'relationship_app/delete_book.html', {'book': book})
+
+
 # Member View
 @user_passes_test(user_is_member)
 def member_view(request):
