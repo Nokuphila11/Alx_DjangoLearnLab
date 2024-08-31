@@ -66,4 +66,16 @@ def add_book(request):
     else:
         form = BookForm()
     return render(request, 'bookshelf/form_example.html', {'form': form})
+from django.shortcuts import render, redirect
+from .forms import ExampleForm
+
+def example_view(request):
+    if request.method == 'POST':
+        form = ExampleForm(request.POST)
+        if form.is_valid():
+            # Process the data, e.g., send an email, save to a database, etc.
+            return redirect('success')  # Redirect to a success page
+    else:
+        form = ExampleForm()
+    return render(request, 'bookshelf/example_form.html', {'form': form})
 
