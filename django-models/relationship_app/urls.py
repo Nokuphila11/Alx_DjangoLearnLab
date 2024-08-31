@@ -43,26 +43,18 @@ urlpatterns = [
 ]
 
 # relationship_app/urls.py
-from django.urls import path
-from .views import add_book, edit_book, delete_book
 
-urlpatterns = [
-    path('add-book/', add_book, name='add_book'),
-    path('edit-book/<int:book_id>/', edit_book, name='edit_book'),
-    path('delete-book/<int:book_id>/', delete_book, name='delete_book'),
-]
-
-# relationship_app/urls.py
 from django.urls import path
-from .views import add_book, edit_book, delete_book
+from .views import add_book, edit_book, delete_book  # Import views
 
 urlpatterns = [
     # URL pattern for adding a book
-    path('add-book/', add_book, name='add_book'),
-    
+    path('add_book/', add_book, name='add_book'),  # URL for add_book view
+
     # URL pattern for editing a book
-    path('edit-book/<int:book_id>/', edit_book, name='edit_book'),
-    
+    path('edit_book/<int:book_id>/', edit_book, name='edit_book'),  # URL for edit_book view
+
     # URL pattern for deleting a book
-    path('delete-book/<int:book_id>/', delete_book, name='delete_book'),
+    path('delete_book/<int:book_id>/', delete_book, name='delete_book'),  # URL for delete_book view
 ]
+
