@@ -7,6 +7,16 @@ urlpatterns = [
     path('library/<int:pk>/', LibraryDetailView.as_view(), name='library_detail'),  # URL for class-based view
 ]
 
+from django.urls import path
+
+from . import views  # Import the views.py file from the current directory
+
+urlpatterns = [
+  path('login/', views.login_view, name='login'),
+  path('logout/', views.logout_view, name='logout'),
+  path('register/', views.register_view, name='register'),
+]
+
 ]
 
 # relationship_app/urls.py
