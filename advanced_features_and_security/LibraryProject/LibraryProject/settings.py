@@ -148,3 +148,36 @@ SECURE_HSTS_PRELOAD = True
 # Ensure secure cookies
 SESSION_COOKIE_HTTPONLY = True
 CSRF_COOKIE_HTTPONLY = True
+
+# settings.py
+
+# Redirect all HTTP traffic to HTTPS
+SECURE_SSL_REDIRECT = True
+
+# HTTP Strict Transport Security (HSTS) settings
+SECURE_HSTS_SECONDS = 31536000  # One year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True  # Apply HSTS to all subdomains
+SECURE_HSTS_PRELOAD = True  # Allow site to be preloaded in browsers' HSTS preload list
+
+# settings.py
+
+# Ensure session cookies are only sent over HTTPS
+SESSION_COOKIE_SECURE = True
+
+# Ensure CSRF cookies are only sent over HTTPS
+CSRF_COOKIE_SECURE = True
+
+# settings.py
+
+# Prevent the site from being framed
+X_FRAME_OPTIONS = 'DENY'
+
+# Prevent the browser from MIME-sniffing the content type
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Enable browser’s XSS filter
+SECURE_BROWSER_XSS_FILTER = True
+
+# Enable SECURE_SSL_REDIRECT to ensure all traffic is redirected to HTTPS
+SECURE_SSL_REDIRECT = True
+
