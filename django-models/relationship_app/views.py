@@ -93,3 +93,34 @@ def librarian_view(request):
 @user_passes_test(lambda u: u.profile.role == 'Member')
 def member_view(request):
     # ...
+# relationship_app/views.py
+from django.shortcuts import render
+from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views import View
+from .models import UserProfile
+
+# Helper function for role-based access
+def user_is_admin(user):
+    return user.userprofile.role == 'Admin'
+
+def user_is_librarian(user):
+    return user.userprofile.role == 'Librarian'
+
+def user_is_member(user):
+    return user.userprofile.role == 'Member'
+
+# Admin View
+@user_passes_test(user_is_admin)
+def admin_view(request):
+    return render(request, 'relationship_app/admin_view.html')
+
+# Librarian View
+@user_passes_test(user_is_librarian)
+def librarian_view(request):
+    return render(request, 'relationship_app/librarian_view.html')
+
+# Member View
+@user_passes_test(user_is_member)
+def member_view(request):
+    return render(request, 'relationship_app/member_view.html')
