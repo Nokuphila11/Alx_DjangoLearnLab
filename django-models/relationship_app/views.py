@@ -80,3 +80,16 @@ def librarian_view(request):
 def member_view(request):
     # Accessible to users with the 'Member' role
     return render(request, 'member_template.html')
+
+
+@user_passes_test(lambda u: u.profile.role == 'Admin')
+def admin_view(request):
+    # ...
+
+@user_passes_test(lambda u: u.profile.role == 'Librarian')
+def librarian_view(request):
+    # ...
+
+@user_passes_test(lambda u: u.profile.role == 'Member')
+def member_view(request):
+    # ...
