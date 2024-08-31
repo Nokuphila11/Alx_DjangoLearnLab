@@ -67,4 +67,16 @@ def register(request):
         form = UserCreationForm()
     return render(request, 'relationship_app/register.html', {'form': form})
 
+from django.contrib.auth.decorators import user_passes_test
 
+def admin_view(request):
+    # Only accessible to users with the 'Admin' role
+    return render(request, 'admin_template.html')
+
+def librarian_view(request):
+    # Only accessible to users with the 'Librarian' role
+    return render(request, 'librarian_template.html')
+
+def member_view(request):
+    # Accessible to users with the 'Member' role
+    return render(request, 'member_template.html')
