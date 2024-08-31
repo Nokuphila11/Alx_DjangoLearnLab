@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-^=c87#^=mwt#mg0(bo$7rd2lgh%s!(m_y&s#oirtkr=e2uy2%^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -132,3 +132,19 @@ AUTH_USER_MODEL = 'relationship_app.CustomUser'
 
 AUTH_USER_MODEL = 'bookshelf.CustomUser'
 
+# Security settings
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY'
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+CSRF_COOKIE_SECURE = True  # Ensure CSRF cookie is only sent over HTTPS
+SESSION_COOKIE_SECURE = True  # Ensure session cookie is only sent over HTTPS
+
+# HTTP Strict Transport Security
+SECURE_HSTS_SECONDS = 31536000  # 1 year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+
+# Ensure secure cookies
+SESSION_COOKIE_HTTPONLY = True
+CSRF_COOKIE_HTTPONLY = True
