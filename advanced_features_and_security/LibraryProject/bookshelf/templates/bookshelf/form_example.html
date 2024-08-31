@@ -1,0 +1,21 @@
+<!-- form_example.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Example Form</title>
+</head>
+<body>
+    <h1>Example Form</h1>
+    
+    <!-- Form Rendering -->
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }} <!-- Renders the form fields as paragraphs -->
+        <button type="submit">Submit</button> <!-- Submit button -->
+    </form>
+
+    <!-- Navigation Link -->
+    <a href="{% url 'home' %}">Back to Home</a> <!-- Adjust 'home' to your actual home URL name -->
+</body>
+</html>
