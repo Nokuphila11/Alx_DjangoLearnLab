@@ -17,7 +17,7 @@ class LibraryDetailView(DetailView):
 
 # relationship_app/views.py
 from django.shortcuts import render
-from django.views.generic import DetailView
+from django.views.generic.detail import DetailView  # Correct import for DetailView
 from .models import Book, Library
 
 # Function-based view to list all books
@@ -30,7 +30,6 @@ class LibraryDetailView(DetailView):
     model = Library  # Specify the model for the DetailView
     template_name = 'relationship_app/library_detail.html'  # Template to use for the view
     context_object_name = 'library'  # The context name used in the template
-
 
 
 
