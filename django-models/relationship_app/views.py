@@ -14,4 +14,18 @@ class LibraryDetailView(DetailView):
     template_name = 'relationship_app/library_detail.html'  # Use this template to display the library details
     context_object_name = 'library'  # The context name used in the template
 
+ from django.views.generic import ListView
+   from .models import Library  # Import your Library model
+
+   class LibraryDetailView(ListView):
+       model = Book
+       template_name = 'relationship_app/library_detail.html'  # Create this template
+       context_object_name = 'books'
+
+       def get_queryset(self):
+           library_id = self.kwargs['pk']  # Get the library ID from the URL
+           return Book.objects.filter(library_id=library_id)  # Filter books by library
+   
+
+
 
