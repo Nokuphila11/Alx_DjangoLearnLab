@@ -1,12 +1,13 @@
 from django.test import TestCase
-from rest_framework.test import APIClient
+from rest_framework.test import APIClient, APITestCase  # Include APITestCase
 from .models import Book
 from .serializers import BookSerializer
 
 # Create an APIClient instance for making API requests
 client = APIClient()
 
-class BookTest(TestCase):
+class BookTest(APITestCase):  # Use APITestCase for API testing
+
     def setUp(self):
         # Create a test Book object for use in tests
         self.book = Book.objects.create(title="Test Book", publication_year=2023, author=Author.objects.create(name="Test Author"))
@@ -15,8 +16,8 @@ class BookTest(TestCase):
         # Prepare data for creating a new book
         data = {"title": "New Book", "publication_year": 2024, "author": self.book.author.id}
 
-        # Make a POST request to create the book
-        response = client.post('/api/books/', data=data, format='json')
+        # Use self.client for testing as APITestCase provides authentication handling
+        response = self.client.post('/api/books/', data=data, format='json')
 
         # Check for successful creation (status code 201)
         self.assertEqual(response.status_code, 201)
@@ -28,10 +29,4 @@ class BookTest(TestCase):
         self.assertEqual(serialized_data['title'], data['title'])
         self.assertEqual(serialized_data['publication_year'], data['publication_year'])
 
-    # Add similar test cases for:
-    # - Updating a Book
-    # - Deleting a Book
-    # - Filtering by author, publication year, etc.
-    # - Searching for books by title
-    # - Ordering books by different criteria
-    # - Testing authorization and permissions for different user roles
+    # Add similar test cases (as mentioned previously) using self.client
