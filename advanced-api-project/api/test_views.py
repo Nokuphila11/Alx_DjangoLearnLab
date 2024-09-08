@@ -31,3 +31,17 @@ class BookTest(APITestCase):
         self.assertEqual(serialized_data['publication_year'], data['publication_year'])
 
     # Add similar test cases using self.client
+def test_update_book_authenticated(self):
+    # Login a user (replace with your user credentials)
+    self.client.login(username="test_user", password="test_password")
+
+    # Prepare data for updating the book
+    data = {"title": "Updated Book Title"}
+
+    # Make a PUT request with authentication
+    response = self.client.put('/api/books/1/', data=data, format='json')
+
+    # Check for successful update (status code 200)
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    # ... further assertions on the updated data
