@@ -156,6 +156,13 @@ from django_filters import rest_framework as filters  # Correct import for Djang
 from .models import Book
 from .serializers import BookSerializer
 
+from rest_framework import generics
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.filters import SearchFilter, OrderingFilter  # Correct import for OrderingFilter
+from django_filters import rest_framework as filters  # Import for DjangoFilterBackend
+from .models import Book
+from .serializers import BookSerializer
+
 class BookListView(generics.ListAPIView):
     """
     API view to retrieve a list of books.
@@ -166,9 +173,7 @@ class BookListView(generics.ListAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly]  # Read-only for unauthenticated users
 
     # Integrate filtering, searching, and ordering
-    filter_backends = [filters.DjangoFilterBackend, SearchFilter, OrderingFilter]  # Properly configured filter backends
-    filterset_fields = ['title', 'author', 'publication_year']  # Fields for filtering
-    search_fields = ['title', 'author']  # Fields for search functionality
-    ordering_fields = ['title', 'publication_year']  # Fields available for ordering
-    ordering = ['title']  # Default ordering field
+    filter_backends = [filters.DjangoFilterBackend, SearchFilter, OrderingFilter]  # Correctly configured filter backends
+    filterset_fields = ['title', 'aut
+
 
