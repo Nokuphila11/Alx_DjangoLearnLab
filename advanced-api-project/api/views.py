@@ -173,7 +173,7 @@ class BookListView(generics.ListAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly]  # Read-only for unauthenticated users
 
     # Integrate filtering, searching, and ordering
-    filter_backends = [filters.DjangoFilterBackend, SearchFilter, OrderingFilter]  # Correctly configured filter backends
+    filter_backends = [filters.OrderingFilter]  # Correctly configured filter backends
     filterset_fields = ['title', 'aut
 
 
