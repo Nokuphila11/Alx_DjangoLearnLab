@@ -185,4 +185,67 @@ class BookListView(generics.ListAPIView):
     ordering = ['title']  # Default ordering field
 
 
+from django.test import TestCase
+from rest_framework.test import APIClient
+from rest_framework import status
+from .models import Book
+from .serializers import BookSerializer
+
+class BookAPITestCase(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+        self.book = Book.objects.create(
+            title='Test Book',
+            author='Test Author',
+            publication_year=2024
+        )
+        self.url = '/api/books/'
+
+    def test_create_book(self):
+        data = {
+            'title': 'New Book',
+            'author': 'New Author',
+            'publication_year': 2025
+        }
+        response = self.client.post(self.url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(Book.objects.count(), 2)
+        self.assertEqual(Book.objects.latest('id').title, 'New Book')
+
+    def test_read_book(self):
+        response = self.client.get(self.url + f'{self.book.id}/')
+        serializer = BookSerializer(self.book)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data, serializer.data)
+
+    def test_update_book(self):
+        data = {
+            'title': 'Updated Book',
+            'author': 'Updated Author',
+            'publication_year': 2026
+        }
+        response = self.client.put(self.url + f'{self.book.id}/', data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.book.refresh_from_db()
+        self.assertEqual(self.book.title, 'Updated Book')
+
+    def test_delete_book(self):
+        response = self.client.delete(self.url + f'{self.book.id}/')
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(Book.objects.count(), 0)
+
+    def test_filter_books(self):
+        response = self.client.get(self.url, {'title': 'Test Book'})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data['results']), 1)
+
+    def test_search_books(self):
+        response = self.client.get(self.url, {'search': 'Test'})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertGreater(len(response.data['results']), 0)
+
+    def test_ordering_books(self):
+        response = self.client.get(self.url, {'ordering': 'publication_year'})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        # Check that the results are ordered by publication_year
 
