@@ -36,3 +36,12 @@ print(author_serializer.data)
 # Serialize a Book instance
 book_serializer = BookSerializer(book)
 print(book_serializer.data)
+
+from rest_framework import serializers
+from .models import Book
+
+class BookSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Book
+        fields = '__all__'  # Or specify specific fields you want to include
+
