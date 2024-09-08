@@ -45,3 +45,12 @@ class BookSerializer(serializers.ModelSerializer):
         model = Book
         fields = '__all__'  # Or specify specific fields you want to include
 
+class BookSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Book
+        fields = '__all__'
+
+    def validate_title(self, value):
+        if 'badword' in value.lower():
+            raise serializers.ValidationError("Title contains inappropriate content.")
+        return value
