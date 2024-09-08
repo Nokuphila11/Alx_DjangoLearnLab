@@ -173,7 +173,16 @@ class BookListView(generics.ListAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly]  # Read-only for unauthenticated users
 
     # Integrate filtering, searching, and ordering
-    filter_backends = [filters.OrderingFilter]  # Correctly configured filter backends
+    filter_backends = [filters.OrderingFilter] ["filters.SearchFilter"] # Correctly configured filter backends
     filterset_fields = ['title', 'aut
+
+
+    # Integrate filtering, searching, and ordering
+    filter_backends = [filters.DjangoFilterBackend, SearchFilter, OrderingFilter]  # Correctly configured filter backends
+    filterset_fields = ['title', 'author', 'publication_year']  # Fields for filtering
+    search_fields = ['title', 'author']  # Fields for search functionality
+    ordering_fields = ['title', 'publication_year']  # Fields available for ordering
+    ordering = ['title']  # Default ordering field
+
 
 
