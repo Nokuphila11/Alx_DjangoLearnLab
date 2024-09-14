@@ -143,9 +143,16 @@ TEMPLATES = [
     },
 ]
 
+import os
+
+# Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
 
-# This is where static files will be collected
+# Additional locations of static files
 STATICFILES_DIRS = [
-    BASE_DIR / "static",
+    os.path.join(BASE_DIR, "static"),
 ]
+
+# Where static files will be collected
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
