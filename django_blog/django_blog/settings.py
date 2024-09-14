@@ -142,3 +142,10 @@ TEMPLATES = [
         },
     },
 ]
+
+STATIC_URL = '/static/'
+
+# This is where static files will be collected
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
