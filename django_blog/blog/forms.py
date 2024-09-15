@@ -22,3 +22,11 @@ class PostForm(forms.ModelForm):
         if len(title) < 5:
             raise forms.ValidationError('Title must be at least 5 characters long.')
         return title
+# blog/forms.py
+from django import forms
+from django.contrib.auth.models import User
+
+class ProfileEditForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('email',)
