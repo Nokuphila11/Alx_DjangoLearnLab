@@ -155,23 +155,52 @@ def search_posts(request):
         posts = Post.objects.all()
     
     return render(request, 'blog/search_results.html', {'posts': posts, 'query': query})
-# views.py (in your blog app)
-from django.shortcuts import render, get_object_or_404, redirect
-from .models import Post, Comment
-from .forms import CommentForm
-from django.contrib.auth.decorators import login_required
 
-@login_required
-def add_comment(request, post_id):
-    post = get_object_or_404(Post, id=post_id)
-    if request.method == 'POST':
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.post = post
-            comment.author = request.user
-            comment.save()
-            return redirect('post_detail', id=post_id)
-    else:
-        form = CommentForm()
-    return render(request, 'blog/add_comment.html', {'form': form, 'post': post})
+# views.py (in your blog app)
+from django.urls import reverse_lazy
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import get_object_or_404
+from .models import Comment, Post
+from .forms import CommentForm
+
+class CommentCreateView(LoginRequiredMixin, CreateView):
+    model = Comment
+    form_class = CommentForm
+    template_name = 'blog/add_comment.html'
+
+    def form_valid(self, form):
+        post = get_object_or_404(Post, id=self.kwargs['post_id'])
+        form.instance.post = post
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('post_detail', kwargs={'id': self.kwargs['post_id']})
+
+class CommentUpdateView(LoginRequiredMixin, UpdateView):
+    model = Comment
+    form_class = CommentForm
+    template_name = 'blog/edit_comment.html'
+
+    def get_object(self, queryset=None):
+        comment = super().get_object(queryset)
+        if comment.author != self.request.user:
+            raise PermissionDenied
+        return comment
+
+    def get_success_url(self):
+        return reverse_lazy('post_detail', kwargs={'id': self.object.post.id})
+
+class CommentDeleteView(LoginRequiredMixin, DeleteView):
+    model = Comment
+    template_name = 'blog/delete_comment.html'
+
+    def get_object(self, queryset=None):
+        comment = super().get_object(queryset)
+        if comment.author != self.request.user:
+            raise PermissionDenied
+        return comment
+
+    def get_success_url(self):
+        return reverse_lazy('post_detail', kwargs={'id': self.object.post.id})
