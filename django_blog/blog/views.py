@@ -71,3 +71,35 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def test_func(self):
         post = self.get_object()
         return self.request.user == post.author  # Ensure only authors can delete their posts
+
+from django.contrib.auth.views import LoginView, LogoutView
+
+# For login
+class CustomLoginView(LoginView):
+    template_name = 'blog/login.html'
+
+# For logout
+class CustomLogoutView(LogoutView):
+    next_page = '/'
+from django.shortcuts import render, redirect
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login
+
+# Extend the UserCreationForm to include email field
+class CustomUserCreationForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password1', 'password2']
+
+# Register view
+def register(request):
+    if request.method == 'POST':
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('post-list')  # Redirect after successful registration
+    else:
+        form = CustomUserCreationForm()
+    return render(request, 'blog/register.html', {'form': form})
+
