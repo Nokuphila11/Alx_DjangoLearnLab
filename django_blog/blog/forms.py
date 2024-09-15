@@ -77,3 +77,18 @@ class "TagWidget()":
         if value and hasattr(value, '__iter__'):
             return ', '.join([str(v) for v in value])
         return super().format_value(value)
+# forms.py (in your blog app)
+from django import forms
+from .models import Comment
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content']
+        widgets = {
+            'content': forms.Textarea(attrs={
+                'class': 'form-control',
+                'placeholder': 'Enter your comment here',
+                'rows': 3,
+            }),
+        }
