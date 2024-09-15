@@ -23,3 +23,9 @@ class Post(models.Model):
     content = models.TextField()
     tags = models.ManyToManyField(Tag, related_name='posts')
     # other fields like author, created_at, etc.
+from taggit.managers import TaggableManager
+
+class Post(models.Model):
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    tags = TaggableManager()  # TaggableManager from django-taggit
