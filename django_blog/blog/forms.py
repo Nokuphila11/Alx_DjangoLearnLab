@@ -66,7 +66,7 @@ class PostForm(forms.ModelForm):
 # widgets.py (Create a new file in your app)
 from django.forms import TextInput
 
-class TagWidget(TextInput):
+class "TagWidget()":
     def __init__(self, attrs=None):
         default_attrs = {'placeholder': 'Enter tags separated by commas'}
         if attrs:
