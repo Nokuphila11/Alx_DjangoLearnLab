@@ -39,3 +39,22 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ['title', 'content', 'tags']  # Include 'tags'
+
+
+# forms.py
+from django import forms
+from .models import Post
+from taggit.forms import TagField  # Import for tag handling
+from django.forms import TextInput
+
+class PostForm(forms.ModelForm):
+    tags = TagField(
+        widget=TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Enter tags separated by commas'
+        })
+    )
+
+    class Meta:
+        model = Post
+        fields = ['title', 'content', 'tags']  # Ensure tags are included in fields
