@@ -63,3 +63,17 @@ class PostForm(forms.ModelForm):
                 'placeholder': 'Write your content here...',
             }),
         }
+# widgets.py (Create a new file in your app)
+from django.forms import TextInput
+
+class TagWidget(TextInput):
+    def __init__(self, attrs=None):
+        default_attrs = {'placeholder': 'Enter tags separated by commas'}
+        if attrs:
+            default_attrs.update(attrs)
+        super().__init__(default_attrs)
+
+    def format_value(self, value):
+        if value and hasattr(value, '__iter__'):
+            return ', '.join([str(v) for v in value])
+        return super().format_value(value)
