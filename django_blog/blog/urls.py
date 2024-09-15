@@ -37,3 +37,12 @@ urlpatterns = [
     path('profile/', views.profile, name='profile'),
     path('profile/edit/', views.profile_edit, name='profile_edit'),
 ]
+
+# blog/urls.py
+from django.urls import path
+from .views import PostByTagListView  # Import the view that handles posts by tag
+
+urlpatterns = [
+    # Other URL patterns...
+    path('tags/<slug:tag_slug>/', PostByTagListView.as_view(), name='posts_by_tag'),
+]
