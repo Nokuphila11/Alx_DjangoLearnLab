@@ -103,3 +103,39 @@ def register(request):
         form = CustomUserCreationForm()
     return render(request, 'blog/register.html', {'form': form})
 
+# blog/views.py
+from django.contrib.auth import views as auth_views
+from django.shortcuts import render, redirect
+from .forms import UserRegistrationForm, ProfileEditForm
+from django.contrib.auth.decorators import login_required
+
+def register(request):
+    if request.method == 'POST':
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')
+    else:
+        form = UserRegistrationForm()
+    return render(request, 'registration/register.html', {'form': form})
+
+@login_required
+def profile_edit(request):
+    if request.method == 'POST':
+        form = ProfileEditForm(instance=request.user, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+    else:
+        form = ProfileEditForm(instance=request.user)
+    return render(request, 'registration/profile_edit.html', {'form': form})
+
+@login_required
+def profile(request):
+    return render(request, 'registration/profile.html')
+
+def login_view(request):
+    return auth_views.LoginView.as_view(template_name='registration/login.html')(request)
+
+def logout_view(request):
+    return auth_views.LogoutView.as_view(next_page='/')(request)
