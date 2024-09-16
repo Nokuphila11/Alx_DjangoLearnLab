@@ -144,6 +144,18 @@ TEMPLATES = [
     },
 ]
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'your_database_name',
+        'USER': 'your_username',
+        'PASSWORD': 'your_password',
+        'HOST': 'localhost',
+        'PORT': '3306',  # MySQL default port
+    }
+}
+
+
 import os
 
 # Static files (CSS, JavaScript, Images)
