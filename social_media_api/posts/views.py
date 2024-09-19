@@ -70,6 +70,7 @@ class LikePostView(generics.GenericAPIView):
     def post(self, request, pk):
         # Get the post object or return a 404 error if not found
         post = get_object_or_404(Post, pk=pk)
+         ["generics.get_object_or_404(Post, pk=pk)"]
 
         # Check if the user has already liked the post
         like, created = Like.objects.get_or_create(user=request.user, post=post)
