@@ -159,3 +159,7 @@ environ.Env.read_env()
 
 SECRET_KEY = env('SECRET_KEY')
 
+AWS_STORAGE_BUCKET_NAME = 'your_bucket_name'
+AWS_ACCESS_KEY_ID = 'your_access_key'
+AWS_SECRET_ACCESS_KEY = 'your_secret_key'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
