@@ -64,3 +64,41 @@ class FeedView(generics.ListAPIView):
         following_users = user.following.all()
         return Post.objects.filter(author__in=following_users).order_by('-created_at')
 
+class LikePostView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, pk):
+        # Get the post object or return a 404 error if not found
+        post = get_object_or_404(Post, pk=pk)
+
+        # Check if the user has already liked the post
+        like, created = Like.objects.get_or_create(user=request.user, post=post)
+
+        if not created:
+            return Response({"error": "You have already liked this post."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Create a notification if the post author is different from the current user
+        if post.author != request.user:
+            Notification.objects.create(
+                recipient=post.author,
+                actor=request.user,
+                verb='liked your post',
+                target_content_type=ContentType.objects.get_for_model(Post),
+                target_object_id=post.id
+            )
+
+        return Response({"message": "Post liked successfully."}, status=status.HTTP_200_OK)
+
+class UnlikePostView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, pk):
+        # Get the post object or return a 404 error if not found
+        post = get_object_or_404(Post, pk=pk)
+
+        try:
+            like = Like.objects.get(user=request.user, post=post)
+            like.delete()
+            return Response({"message": "Post unliked successfully."}, status=status.HTTP_200_OK)
+        except Like.DoesNotExist:
+            return Response({"error": "You have not liked this post."}, status=status.HTTP_400_BAD_REQUEST)
