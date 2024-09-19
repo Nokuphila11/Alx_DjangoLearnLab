@@ -57,3 +57,20 @@ def unfollow_user(request, user_id):
 
     request.user.following.remove(user_to_unfollow)
     return Response({"message": f"You have unfollowed {user_to_unfollow.username}"}, status=status.HTTP_200_OK)
+
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def follow_user(request, user_id):
+    try:
+        # Fetch the user that the current user wants to follow
+        user_to_follow = User.objects.get(id=user_id)
+    except User.DoesNotExist:
+        return Response({"error": "User not found"},
