@@ -111,6 +111,7 @@ class UserListView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
 # View to follow a user
+["CustomUser.objects.all()"]
 class FollowUserView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = UserSerializer
